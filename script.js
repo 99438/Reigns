@@ -315,20 +315,35 @@ document.querySelectorAll('.card').forEach(card => {
 });
 
 function onMouseDown(e) {
+    e.preventDefault(); // 防止默认行为
     startX = e.clientX;
     currentCard = e.currentTarget;
     currentCard.style.transition = 'none';
+    document.body.classList.add('no-scroll'); // 禁止滚动
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
 }
 
+function onMouseUp(e) {
+    if (!currentCard) return;
+    document.body.classList.remove('no-scroll'); // 恢复滚动
+    document.removeEventListener('mousemove', onMouseMove);
+    document.removeEventListener('mouseup', onMouseUp);
+    const diffX = e.clientX - startX;
+    finalizeSwipe(diffX);
+}
+
 function onTouchStart(e) {
+    e.preventDefault(); // 防止默认行为
     startX = e.touches[0].clientX;
     currentCard = e.currentTarget;
     currentCard.style.transition = 'none';
+    document.body.classList.add('no-scroll'); // 禁止滚动
     document.addEventListener('touchmove', onTouchMove);
     document.addEventListener('touchend', onTouchEnd);
 }
+
+
 
 function onMouseMove(e) {
     if (!currentCard) return;
@@ -343,6 +358,7 @@ function onTouchMove(e) {
 }
 
 function moveCard(diffX) {
+
     currentCard.style.transform = `translateX(${diffX}px) rotate(${diffX / 10}deg)`;
     if (diffX > 0) {
         currentCard.classList.add('active');
