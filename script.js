@@ -437,16 +437,13 @@ function generateEvents() {
     return eventsList;
 }
 
-// 随机选择不重复的事件
+// 随机选择事件，允许重复
 function getRandomEvents(count) {
     const selectedEvents = [];
-    const eventsCopy = [...randomEvents];
 
     for (let i = 0; i < count; i++) {
-        if (eventsCopy.length === 0) break; // 如果没有足够的事件，停止选择
-        const randomIndex = Math.floor(Math.random() * eventsCopy.length);
-        selectedEvents.push(eventsCopy[randomIndex]);
-        eventsCopy.splice(randomIndex, 1); // 防止重复选择
+        const randomIndex = Math.floor(Math.random() * randomEvents.length);
+        selectedEvents.push(randomEvents[randomIndex]);
     }
 
     return selectedEvents;
